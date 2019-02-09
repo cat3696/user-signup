@@ -1,14 +1,14 @@
 from flask import Flask, request, redirect, render_template
 
-import cgi
-import os
-
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
+@app.route('/')
+def index():
+    return render_template("main.html")
 # route to display form
 
-@app.route('/signup')
+@app.route('/main.html')
 def display_user_signup_form():
     return render_template('main.html')
 
@@ -39,44 +39,35 @@ def email_at_symbol_more_than_one(x):
         return False
 
 def email_period(x):
-    if x.count('.') >= 1:
+    if x.count('.') == 1:
         return True
     else:
         return False
 
-def email_period_more_than_one(x):
-    if x.count('.') <= 1:
-        return True
-    else:
-        return False
 
 # route to process and validate form
 
-@app.route("/signup", methods=['POST'])
+@app.route("/main.html", methods=['POST'])
 def user_signup_complete():
-
-    # THIS CREATES VARIABLES FROM THE FORM 
 
     username = request.form['username']
     password = request.form['password']
     password_validate = request.form['password_validate']
     email = request.form['email']
 
-    # THIS CREATES EMPTY STRINGS FOR THE ERRORS
+    # empty strings for errors
 
     username_error = ""
     password_error = ""
     password_validate_error = ""
     email_error = ""
 
-    # THESE ARE THE ERROR MESSAGES THAT OCCUR MORE THAN ONCE
-
+    #Error Messages
     err_required = "Required field"
     err_reenter_pw = "Please re-enter password"
-    err_char_count = "Must be between 3 and 20 characters"
-    err_no_spaces = "Must not contain spaces"
-
-    # THIS IS THE PASSWORD VALIDATION
+    err_char_count = "must be between 3 and 20 characters"
+    err_no_spaces = "must not contain spaces"
+    # Pw validation
 
     if not empty_val(password):
         password_error = err_required
@@ -91,19 +82,19 @@ def user_signup_complete():
         if " " in password:
             password_error = "Password " + err_no_spaces
             password = ''
-            password_validate = ''
+            validation_e = ''
             password_validate_error = err_reenter_pw
 
-    # THIS IS THE SECOND PASSWORD VALIDATION
+    # password match validation
 
     if password_validate != password:
-        password_validate_error = "Passwords must match"
+        password_validate_error = "Passwords must match."
         password = ''
         password_validate = ''
-        password_error = 'Passwords must match'
+        password_error = 'Passwords must match.'
             
 
-    # THIS IS THE USERNAME VALIDATION
+    # Username validation
 
     if not empty_val(username):
         username_error = err_required
@@ -124,10 +115,9 @@ def user_signup_complete():
             password_validate = ''
             password_error = err_reenter_pw
             password_validate_error = err_reenter_pw
+    #Email validation
 
-    # THIS IS THE EMAIL VALIDATION
-
-    # see if email contains text prior to running validations
+    # See if email contains text prior to running validations
     if empty_val(email):
         # validations start here
         if not char_length(email):
@@ -149,13 +139,7 @@ def user_signup_complete():
             password_error = err_reenter_pw
             password_validate_error = err_reenter_pw
         elif not email_period(email):
-            email_error = "Email must contain ."
-            password = ''
-            password_validate = ''
-            password_error = err_reenter_pw
-            password_validate_error = err_reenter_pw
-        elif not email_period_more_than_one(email):
-            email_error = "Email must contain only one ."
+            email_error = "Email must contain one ."
             password = ''
             password_validate = ''
             password_error = err_reenter_pw
@@ -167,9 +151,6 @@ def user_signup_complete():
                 password_validate = ''
                 password_error = err_reenter_pw
                 password_validate_error = err_reenter_pw
-
-    # IF THERE ARE NO ERRORS, THIS WILL REDIRECT TO WELCOME.HTML
-    # IF THERE ARE ERRORS, THIS WILL STAY ON THE MAIN.HTML (FORM) AND DISPLAY THE ERROR MSGS
 
     if not username_error and not password_error and not password_validate_error and not email_error:
         username = username
