@@ -26,13 +26,13 @@ def char_length(x):
     else:
         return False
 
-def email_at_symbol(x):
+def at_symbol(x):
     if x.count('@') >= 1:
         return True
     else:
         return False
 
-def email_at_symbol_more_than_one(x):
+def at_symbol_plural(x):
     if x.count('@') <= 1:
         return True
     else:
@@ -55,108 +55,108 @@ def user_signup_complete():
     password_validate = request.form['password_validate']
     email = request.form['email']
 
-    # empty strings for errors
+    # empty strings for es
 
-    username_error = ""
-    password_error = ""
-    password_validate_error = ""
-    email_error = ""
+    username_e = ""
+    password_e = ""
+    password_validate_e = ""
+    email_e = ""
 
-    #Error Messages
-    err_required = "Required field"
-    err_reenter_pw = "Please re-enter password"
-    err_char_count = "must be between 3 and 20 characters"
-    err_no_spaces = "must not contain spaces"
-    # Pw validation
+    #e Messages
+    e_required = "Required field"
+    e_reenter_password = "Please re-enter password"
+    e_char_count = "must be between 3 and 20 characters"
+    e_no_space = "must not contain space"
+    # password validation
 
     if not empty_val(password):
-        password_error = err_required
+        password_e = e_required
         password = ''
         password_validate = ''
     elif not char_length(password):
-        password_error = "Password " + err_char_count
+        password_e = "password " + e_char_count
         password = ''
         password_validate = ''
-        password_validate_error = err_reenter_pw
+        password_validate_e = e_reenter_password
     else:
         if " " in password:
-            password_error = "Password " + err_no_spaces
+            password_e = "password " + e_no_space
             password = ''
             validation_e = ''
-            password_validate_error = err_reenter_pw
+            password_validate_e = e_reenter_password
 
     # password match validation
 
     if password_validate != password:
-        password_validate_error = "Passwords must match."
+        password_validate_e = "passwords must match."
         password = ''
         password_validate = ''
-        password_error = 'Passwords must match.'
+        password_e = 'passwords must match.'
             
 
     # Username validation
 
     if not empty_val(username):
-        username_error = err_required
+        username_e = e_required
         password = ''
         password_validate = ''
-        password_error = err_reenter_pw
-        password_validate_error = err_reenter_pw
+        password_e = e_reenter_password
+        password_validate_e = e_reenter_password
     elif not char_length(username):
-        username_error = "Username " + err_char_count
+        username_e = "Username " + e_char_count
         password = ''
         password_validate = ''
-        password_error = err_reenter_pw
-        password_validate_error = err_reenter_pw
+        password_e = e_reenter_password
+        password_validate_e = e_reenter_password
     else:
         if " " in username:
-            username_error = "Username " + err_no_spaces
+            username_e = "Username " + e_no_space
             password = ''
             password_validate = ''
-            password_error = err_reenter_pw
-            password_validate_error = err_reenter_pw
+            password_e = e_reenter_password
+            password_validate_e = e_reenter_password
     #Email validation
 
     # See if email contains text prior to running validations
     if empty_val(email):
         # validations start here
         if not char_length(email):
-            email_error = "Email " + err_char_count
+            email_e = "Email " + e_char_count
             password = ''
             password_validate = ''
-            password_error = err_reenter_pw
-            password_validate_error = err_reenter_pw
-        elif not email_at_symbol(email):
-            email_error = "Email must contain the @ symbol"
+            password_e = e_reenter_password
+            password_validate_e = e_reenter_password
+        elif not at_symbol(email):
+            email_e = "Email must contain the @ symbol"
             password = ''
             password_validate = ''
-            password_error = err_reenter_pw
-            password_validate_error = err_reenter_pw
-        elif not email_at_symbol_more_than_one(email):
-            email_error = "Email must contain only one @ symbol"
+            password_e = e_reenter_password
+            password_validate_e = e_reenter_password
+        elif not at_symbol_plural(email):
+            email_e = "Email must contain only one @ symbol"
             password = ''
             password_validate = ''
-            password_error = err_reenter_pw
-            password_validate_error = err_reenter_pw
+            password_e = e_reenter_password
+            password_validate_e = e_reenter_password
         elif not email_period(email):
-            email_error = "Email must contain one ."
+            email_e = "Email must contain one ."
             password = ''
             password_validate = ''
-            password_error = err_reenter_pw
-            password_validate_error = err_reenter_pw
+            password_e = e_reenter_password
+            password_validate_e = e_reenter_password
         else:
             if " " in email:
-                email_error = "Email " + err_no_spaces
+                email_e = "Email " + e_no_space
                 password = ''
                 password_validate = ''
-                password_error = err_reenter_pw
-                password_validate_error = err_reenter_pw
+                password_e = e_reenter_password
+                password_validate_e = e_reenter_password
 
-    if not username_error and not password_error and not password_validate_error and not email_error:
+    if not username_e and not password_e and not password_validate_e and not email_e:
         username = username
         return redirect('/welcome?username={0}'.format(username))
     else:
-        return render_template('main.html', username_error=username_error, username=username, password_error=password_error, password=password, password_validate_error=password_validate_error, password_validate=password_validate, email_error=email_error, email=email)
+        return render_template('main.html', username_e=username_e, username=username, password_e=password_e, password=password, password_validate_e=password_validate_e, password_validate=password_validate, email_e=email_e, email=email)
 
 # redirect to welcome
 
