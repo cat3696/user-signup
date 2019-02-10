@@ -127,19 +127,19 @@ def user_signup_complete():
             password_e = e_reenter_password
             password_validate_e = e_reenter_password
         elif not at_symbol(email):
-            email_e = "Email must contain the @ symbol"
+            email_e = "Email must contain the @ symbol."
             password = ''
             password_validate = ''
             password_e = e_reenter_password
             password_validate_e = e_reenter_password
         elif not at_symbol_plural(email):
-            email_e = "Email must contain only one @ symbol"
+            email_e = "Email must contain only one @ symbol."
             password = ''
             password_validate = ''
             password_e = e_reenter_password
             password_validate_e = e_reenter_password
         elif not email_period(email):
-            email_e = "Email must contain one ."
+            email_e = "Email must contain one period."
             password = ''
             password_validate = ''
             password_e = e_reenter_password
